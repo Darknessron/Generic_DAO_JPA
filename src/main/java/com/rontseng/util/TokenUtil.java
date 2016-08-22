@@ -5,7 +5,6 @@ import java.security.Key;
 import java.util.Calendar;
 import java.util.Date;
 
-import com.rontseng.dao.support.AbstractResultVO;
 import com.rontseng.dao.support.PagedQueryVO;
 
 import io.jsonwebtoken.Claims;
@@ -19,7 +18,7 @@ import io.jsonwebtoken.impl.crypto.MacProvider;
  */
 public class TokenUtil {
 	private static final Key SECRET_KEY = MacProvider.generateKey();
-	private static final String ISSUER = "Audatex";
+	private static final String ISSUER = "Ron";
 
 	@SuppressWarnings("rawtypes")
 	public static String createToken(PagedQueryVO queryVO) {
@@ -39,14 +38,14 @@ public class TokenUtil {
 		return token;
 	}
 
-	public static boolean validateToken(AbstractResultVO queryVO) {
+	public static boolean validateToken(String token, String audience) {
 		try {
-			Claims claims = Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(queryVO.getToken()).getBody();
+			Claims claims = Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
 			// check Issuer
 			if (!claims.getIssuer().equals(ISSUER))
 				return false;
 			// check Audience
-			if (!claims.getAudience().equals(queryVO.getAudience()))
+			if (!claims.getAudience().equals(audience))
 				return false;
 			// check Expiration
 			if (DateUtil.getCurrentDate().after(claims.getExpiration()))

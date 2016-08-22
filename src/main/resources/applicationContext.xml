@@ -12,29 +12,28 @@
 	<aop:config proxy-target-class="true" />
 	<aop:aspectj-autoproxy />
 	<mvc:annotation-driven/>
+	<context:component-scan base-package="com.rontseng.example.controller,com.rontseng.dao"/>
 	<!-- JPA Config -->
 
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
 	</bean>
 	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-		<property name="persistenceUnitName" value="integration" />
-		<property name="packagesToScan" value="com.audatex.integration.model" />
+		<property name="persistenceUnitName" value="example" />
 		<property name="jpaVendorAdapter">
 			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
 				<property name="showSql" value="true" />
-				<property name="generateDdl" value="false" />
+				<property name="generateDdl" value="true" />
 			</bean>
 		</property>
 	</bean>
 
 	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
-	<context:component-scan base-package="com.audatex.integration"/>
 	<!-- end of JPA Config -->
 
 	<!-- audit aop -->
 	
-	<bean id="messageAdvisor" class="com.audatex.integration.advisor.MessageAdvisor" />
-	<bean id="SpringUtil" class="com.audatex.integration.util.SpringUtil" />
+	<bean id="messageAdvisor" class="com.rontseng.advisor.MessageAdvisor" />
+	<bean id="SpringUtil" class="com.rontseng.util.SpringUtil" />
 	<!-- end of audit aop -->
 </beans>
