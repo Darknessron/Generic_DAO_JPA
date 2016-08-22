@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.rontseng.util;
 
 import org.springframework.beans.BeansException;

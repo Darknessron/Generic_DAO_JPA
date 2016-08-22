@@ -1,10 +1,3 @@
-/*
- * Copyright (c), Audatex GmbH, Switzerland. This is UNPUBLISHED
- * PROPRIETARY SOURCE CODE of Audatex GmbH; the contents of this file
- * may not be disclosed to third parties, copied or duplicated in any form, in
- * whole or in part, without the prior written permission of Audatex 
- * GmbH. ALL RIGHTS RESERVED.
- */
 package com.rontseng.advisor;
 
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -23,32 +16,31 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * Describe the type here.
  *
  * @author Ron
- * @see AXN-
  * @date May 27, 2016 4:55:11 PM
  */
 @Aspect
 public class MessageAdvisor {
-  @Autowired
-  private IGenericDAO<MessageLog, Long> messageLogDao;
+	@Autowired
+	private IGenericDAO<MessageLog, Long> messageLogDao;
 
-  @SuppressWarnings("rawtypes")
-  @Around("execution(* com.rontseng.controller..*(..))")
-  public Object logAroundMessage(ProceedingJoinPoint joinPoint) throws Throwable {
-    ObjectMapper mapper = new ObjectMapper();
-    MessageLog log = new MessageLog();
+	@SuppressWarnings("rawtypes")
+	@Around("execution(* com.rontseng.controller..*(..))")
+	public Object logAroundMessage(ProceedingJoinPoint joinPoint) throws Throwable {
+		ObjectMapper mapper = new ObjectMapper();
+		MessageLog log = new MessageLog();
 
-    PagedQueryVO queryVO = (PagedQueryVO) joinPoint.getArgs()[0];
-    log.setRequestContent(mapper.writeValueAsString(queryVO));
-    log.setRequestTime(DateUtil.getCurrentDate());
+		PagedQueryVO queryVO = (PagedQueryVO) joinPoint.getArgs()[0];
+		log.setRequestContent(mapper.writeValueAsString(queryVO));
+		log.setRequestTime(DateUtil.getCurrentDate());
 
-    AbstractResultVO result =  (AbstractResultVO)joinPoint.proceed();
+		AbstractResultVO result = (AbstractResultVO) joinPoint.proceed();
 
-    log.setResponseContent(mapper.writeValueAsString(result));
-    log.setResponseTime(DateUtil.getCurrentDate());
-    log.setUserToken(result.getToken());
+		log.setResponseContent(mapper.writeValueAsString(result));
+		log.setResponseTime(DateUtil.getCurrentDate());
+		log.setUserToken(result.getToken());
 
-    messageLogDao.save(log);
+		messageLogDao.save(log);
 
-    return result;
-  }
+		return result;
+	}
 }

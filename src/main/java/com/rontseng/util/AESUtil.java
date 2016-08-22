@@ -27,7 +27,7 @@ public class AESUtil {
     AlgorithmParameterSpec paramSpec = new IvParameterSpec(iv);
 
     try {
-      ecipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+			ecipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
       dcipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
 
       // CBC requires an initialization vector

@@ -18,153 +18,141 @@ import javax.persistence.TemporalType;
 @Table(name = "MessageLog", catalog = "integration")
 public class MessageLog implements java.io.Serializable {
 
-  private Integer messageLogId;
-  private String userId;
-  private String userToken;
-  private String requestContent;
-  private Date requestTime;
-  private String responseContent;
-  private Date responseTime;
-  private String vin;
-  private String manufacturer;
+	private Integer messageLogId;
+	private String userId;
+	private String userToken;
+	private String requestContent;
+	private Date requestTime;
+	private String responseContent;
+	private Date responseTime;
+	private String vin;
+	private String manufacturer;
 
-  public MessageLog() {
-  }
+	public MessageLog() {
+	}
 
-  public MessageLog(
-      String userId,
-      String userToken,
-      String requestContent,
-      Date requestTime,
-      String vin,
-      String manufacturer) {
-    this.userId = userId;
-    this.userToken = userToken;
-    this.requestContent = requestContent;
-    this.requestTime = requestTime;
-    this.vin = vin;
-    this.manufacturer = manufacturer;
-  }
+	public MessageLog(String userId, String userToken, String requestContent, Date requestTime, String vin,
+			String manufacturer) {
+		this.userId = userId;
+		this.userToken = userToken;
+		this.requestContent = requestContent;
+		this.requestTime = requestTime;
+		this.vin = vin;
+		this.manufacturer = manufacturer;
+	}
 
-  public MessageLog(
-      String userId,
-      String userToken,
-      String requestContent,
-      Date requestTime,
-      String responseContent,
-      Date responseTime,
-      String vin,
-      String manufacturer) {
-    this.userId = userId;
-    this.userToken = userToken;
-    this.requestContent = requestContent;
-    this.requestTime = requestTime;
-    this.responseContent = responseContent;
-    this.responseTime = responseTime;
-    this.vin = vin;
-    this.manufacturer = manufacturer;
-  }
+	public MessageLog(String userId, String userToken, String requestContent, Date requestTime, String responseContent,
+			Date responseTime, String vin, String manufacturer) {
+		this.userId = userId;
+		this.userToken = userToken;
+		this.requestContent = requestContent;
+		this.requestTime = requestTime;
+		this.responseContent = responseContent;
+		this.responseTime = responseTime;
+		this.vin = vin;
+		this.manufacturer = manufacturer;
+	}
 
-  @Id
-  @GeneratedValue(strategy = IDENTITY)
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
 
-  @Column(name = "MessageLogId", unique = true, nullable = false)
-  public Integer getMessageLogId() {
-    return this.messageLogId;
-  }
+	@Column(name = "MessageLogId", unique = true, nullable = false)
+	public Integer getMessageLogId() {
+		return this.messageLogId;
+	}
 
-  public void setMessageLogId(Integer messageLogId) {
-    this.messageLogId = messageLogId;
-  }
+	public void setMessageLogId(Integer messageLogId) {
+		this.messageLogId = messageLogId;
+	}
 
-  @Column(name = "UserId", length = 45)
-  public String getUserId() {
-    return this.userId;
-  }
+	@Column(name = "UserId", length = 45)
+	public String getUserId() {
+		return this.userId;
+	}
 
-  public void setUserId(String userId) {
-    this.userId = userId;
-    
-    if (this.userId != null && this.userId.length() > 45) {
-      this.userId = this.userId.substring(0, 42) + "...";
-    }
-  }
+	public void setUserId(String userId) {
+		this.userId = userId;
 
-  @Column(name = "UserToken", length = 300)
-  public String getUserToken() {
-    return this.userToken;
-  }
+		if (this.userId != null && this.userId.length() > 45) {
+			this.userId = this.userId.substring(0, 42) + "...";
+		}
+	}
 
-  public void setUserToken(String userToken) {
-    this.userToken = userToken;
-    
-    if(this.userToken != null && this.userToken.length() > 300) {
-      this.userToken = this.userToken.substring(0,297) + "...";
-    }
-  }
+	@Column(name = "UserToken", length = 300)
+	public String getUserToken() {
+		return this.userToken;
+	}
 
-  @Column(name = "RequestContent", nullable = false)
-  public String getRequestContent() {
-    return this.requestContent;
-  }
+	public void setUserToken(String userToken) {
+		this.userToken = userToken;
 
-  public void setRequestContent(String requestContent) {
-    this.requestContent = requestContent;
-  }
+		if (this.userToken != null && this.userToken.length() > 300) {
+			this.userToken = this.userToken.substring(0, 297) + "...";
+		}
+	}
 
-  @Temporal(TemporalType.TIMESTAMP)
-  @Column(name = "RequestTime", nullable = false, length = 19)
-  public Date getRequestTime() {
-    return this.requestTime;
-  }
+	@Column(name = "RequestContent", nullable = false)
+	public String getRequestContent() {
+		return this.requestContent;
+	}
 
-  public void setRequestTime(Date requestTime) {
-    this.requestTime = requestTime;
-  }
+	public void setRequestContent(String requestContent) {
+		this.requestContent = requestContent;
+	}
 
-  @Column(name = "ResponseContent", nullable = false)
-  public String getResponseContent() {
-    return this.responseContent;
-  }
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "RequestTime", nullable = false, length = 19)
+	public Date getRequestTime() {
+		return this.requestTime;
+	}
 
-  public void setResponseContent(String responseContent) {
-    this.responseContent = responseContent;
-  }
+	public void setRequestTime(Date requestTime) {
+		this.requestTime = requestTime;
+	}
 
-  @Temporal(TemporalType.TIMESTAMP)
-  @Column(name = "ResponseTime", length = 19)
-  public Date getResponseTime() {
-    return this.responseTime;
-  }
+	@Column(name = "ResponseContent", nullable = false)
+	public String getResponseContent() {
+		return this.responseContent;
+	}
 
-  public void setResponseTime(Date responseTime) {
-    this.responseTime = responseTime;
-  }
+	public void setResponseContent(String responseContent) {
+		this.responseContent = responseContent;
+	}
 
-  @Column(name = "VIN", length = 20)
-  public String getVin() {
-    return this.vin;
-  }
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ResponseTime", length = 19)
+	public Date getResponseTime() {
+		return this.responseTime;
+	}
 
-  public void setVin(String vin) {
-    this.vin = vin;
-    
-    if (this.vin != null && this.vin.length() > 20) {
-      this.vin = this.vin.substring(0, 17) + "...";
-    }
-  }
+	public void setResponseTime(Date responseTime) {
+		this.responseTime = responseTime;
+	}
 
-  @Column(name = "Manufacturer", length = 2)
-  public String getManufacturer() {
-    return this.manufacturer;
-  }
+	@Column(name = "VIN", length = 20)
+	public String getVin() {
+		return this.vin;
+	}
 
-  public void setManufacturer(String manufacturer) {
-    this.manufacturer = manufacturer;
-    
-    if (this.manufacturer != null && this.manufacturer.length() > 2) {
-      this.manufacturer = "..";
-    }
-  }
+	public void setVin(String vin) {
+		this.vin = vin;
+
+		if (this.vin != null && this.vin.length() > 20) {
+			this.vin = this.vin.substring(0, 17) + "...";
+		}
+	}
+
+	@Column(name = "Manufacturer", length = 2)
+	public String getManufacturer() {
+		return this.manufacturer;
+	}
+
+	public void setManufacturer(String manufacturer) {
+		this.manufacturer = manufacturer;
+
+		if (this.manufacturer != null && this.manufacturer.length() > 2) {
+			this.manufacturer = "..";
+		}
+	}
 
 }
