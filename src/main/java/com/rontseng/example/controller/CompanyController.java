@@ -3,6 +3,8 @@
  */
 package com.rontseng.example.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -46,6 +48,12 @@ public class CompanyController {
 	@RequestMapping(path="/{companyId}", method=RequestMethod.GET)
 	public @ResponseBody Company getCompany(@PathVariable("companyId") Long companyId)	{
 		Company result = companyDao.setClazz(Company.class).findOne(companyId);
+		return result;
+	}
+	
+	@RequestMapping(path="/name/{companyName}", method=RequestMethod.GET)
+	public @ResponseBody List<Company> getCompany(@PathVariable("companyName") String companyName)	{
+		List<Company> result = companyDao.setClazz(Company.class).findBy(new String[]{"companyName"}, new String[]{companyName});
 		return result;
 	}
 }
