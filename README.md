@@ -25,16 +25,11 @@ Http response
 >     "companyName": "ExampleCompany"
 > }
 
-Java Code
-> 	@RequestMapping(method=RequestMethod.POST, consumes="application/json")
-
-> 	public @ResponseBody Company createCompany(@RequestBody Company company)	{
-
-> 		company = companyDao.save(company);
-
-> 		return company;
-
-> 	}
+	@RequestMapping(method=RequestMethod.POST, consumes="application/json")
+	public @ResponseBody Company createCompany(@RequestBody Company company)	{
+		company = companyDao.save(company);
+		return company;
+	}
 
 #### Select for company ####
 
@@ -54,15 +49,12 @@ Http response
 > }
 
 Java Code
-> 	@RequestMapping(path="/{companyId}", method=RequestMethod.GET)
 
-> 	public @ResponseBody Company getCompany(@PathVariable("companyId") Long companyId)	{
-
-> 		Company result = companyDao.setClazz(Company.class).findOne(companyId);
-
-> 		return result;
-
-> 	}
+	@RequestMapping(path="/{companyId}", method=RequestMethod.GET)
+	public @ResponseBody Company getCompany(@PathVariable("companyId") Long companyId)	{
+		Company result = companyDao.setClazz(Company.class).findOne(companyId);
+		return result;
+	}
 
 
 
@@ -82,15 +74,12 @@ Http response
 > }
 
 Java Code
-> 	@RequestMapping(path="/name/{companyName}", method=RequestMethod.GET)
 
-> 	public @ResponseBody List<CompanygetCompany(@PathVariable("companyName") String companyName)	{
-
-> 		List<Companyresult = companyDao.setClazz(Company.class).findBy(new String[]{"companyName"}, new String[]{companyName});
-
-> 		return result;
-
-> 	}
+	@RequestMapping(path="/name/{companyName}", method=RequestMethod.GET)
+	public @ResponseBody List<Company> getCompany(@PathVariable("companyName") String companyName)	{
+		List<Company> result = companyDao.setClazz(Company.class).findBy(new String[]{"companyName"}, new String[]{companyName});
+		return result;
+	}
 
 
 #### Update a company ####
@@ -111,17 +100,13 @@ Http response
 > }
 
 Java Code
-> 	@RequestMapping(path="/{companyId}",method=RequestMethod.PUT, consumes="application/json")
 
-> 	public @ResponseBody Company updateCompany(@PathVariable Long companyId, @RequestBody Company company)	{
-
-> 		company.setCompanyId(companyId);
-
-> 		company = companyDao.save(company);
-
-> 		return company;
-
-> 	}
+	@RequestMapping(path="/{companyId}",method=RequestMethod.PUT, consumes="application/json")
+	public @ResponseBody Company updateCompany(@PathVariable Long companyId, @RequestBody Company company)	{
+		company.setCompanyId(companyId);
+		company = companyDao.save(company);
+		return company;
+	}
 
 #### Delete a company ####
 
@@ -136,43 +121,35 @@ Http response
 **None**
 
 Java Code
-> 	@RequestMapping(path="/{companyId}", method=RequestMethod.DELETE)
 
-> 	public void deleteCompany(@PathVariable Long companyId)	{
-
-> 		companyDao.setClazz(Company.class).deleteById(companyId);
-
-> 	}
+	@RequestMapping(path="/{companyId}", method=RequestMethod.DELETE)
+	public void deleteCompany(@PathVariable Long companyId)	{
+		companyDao.setClazz(Company.class).deleteById(companyId);
+	}
 
 
 ### Message Log ###
 Java Code
-> 	@Around("execution(* com.rontseng.example.controller..*(..))")
 
-> 	public Object logAroundMessage(ProceedingJoinPoint joinPoint) throws Throwable {
+	@Around("execution(* com.rontseng.example.controller..*(..))")
+	public Object logAroundMessage(ProceedingJoinPoint joinPoint) throws Throwable {
+		ObjectMapper mapper = new ObjectMapper();
+		MessageLog log = new MessageLog();
+		
+		log.setUrl(httpRequest.getRequestURL().append("?").append(httpRequest.getQueryString()).toString());
+		log.setHttpMethod(httpRequest.getMethod());
 
-> 		ObjectMapper mapper = new ObjectMapper();
+		Object request = joinPoint.getArgs()[0];
+		log.setRequestContent(mapper.writeValueAsString(request));
+		log.setRequestTime(DateUtil.getCurrentDate());
 
-> 		MessageLog log = new MessageLog();
+		Object result = joinPoint.proceed();
 
-> 		log.setUrl(httpRequest.getRequestURL().append("?").append(httpRequest.getQueryString()).toString());
+		log.setResponseContent(mapper.writeValueAsString(result));
+		log.setResponseTime(DateUtil.getCurrentDate());
+		
 
-> 		log.setHttpMethod(httpRequest.getMethod());
+		messageLogDao.save(log);
 
-> 		Object request = joinPoint.getArgs()[0];
-
-> 		log.setRequestContent(mapper.writeValueAsString(request));
-
-> 		log.setRequestTime(DateUtil.getCurrentDate());
-
-> 		Object result = joinPoint.proceed();
-
-> 		log.setResponseContent(mapper.writeValueAsString(result));
-
-> 		log.setResponseTime(DateUtil.getCurrentDate());
- 
-> 		messageLogDao.save(log);
-
-> 		return result;
-
-> 	}
+		return result;
+	}
